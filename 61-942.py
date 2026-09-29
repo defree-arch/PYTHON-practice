@@ -1,18 +1,19 @@
 
 def perm(s):
     n = len(s)
-    list_n = [x for x in range(0, n + 1)]
+    low, high = 0, n
     perm_list = []
-    for i in range(0, n):
+    
+    for i in s:
         el = None
-        if s[i] == "I": 
-            el = min(list_n)
-            perm_list.append(el)
+        if i == "I": 
+            el = low
+            low += 1
         else: 
-            el = max(list_n)
-            perm_list.append(el)
-        list_n.remove(el)
-        if i == n - 1:  perm_list.append(list_n[-1])
+            el = high
+            high -= 1
+        perm_list.append(el)
+    perm_list.append(low)
     return perm_list
 
 
