@@ -7,4 +7,4 @@ Once you pay the cost, you can either climb one or two steps.
 You can either start from the step with index 0, or the step with index 1.
 
 Return the minimum cost to reach the top of the staircase, which is the position just past the last step (index cost.length). -->
-![alt text](image.png)
+![alt text](61-746.png)
