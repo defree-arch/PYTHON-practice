@@ -24,5 +24,4 @@ Input: word1 = "makes", word2 = "makes"
 Output: 3
 Note:
 You may assume word1 and word2 are both in the list.
-
 ![нет теста на leetcode.com](image.png)
