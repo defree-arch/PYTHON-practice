@@ -27,3 +27,9 @@ def shortest_dist(l, word_1, word_2):
 
 
 print(shortest_dist(["a", "d", "v", "k", "b", "a", "a", "b", "a", "e", "e"], "a", "a"))
+print(shortest_dist(["e", "e"], "e", "e"))
+print(shortest_dist(["e", "a", "e"], "e", "e"))
+print(shortest_dist(["a", "b", "e", "e"], "a", "e"))
+print(shortest_dist(["a", "e", "e", "b"], "a", "b"))
+print(shortest_dist(["a", "e", "b", "d", "b"], "a", "b"))
+print(shortest_dist(["a", "e", "a", "b", "b"], "a", "b"))
