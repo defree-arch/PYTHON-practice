@@ -13,7 +13,7 @@ s[i] == 'D' if perm[i] > perm[i + 1].
 Given a string s, reconstruct the permutation perm and return it. If there are multiple valid permutations perm, return any of them. 
 ![0 ms Beats 100.00% | 19.93 MB Beats 78.96%](61-942.png)
 
-- 61-245 - leetcode 245
+- 61-245 - leetcode.com 245 (No access for testing on the site)
 > Given a list of words and two words word1 and word2, return the shortest distance between these two words in the list.
 word1 and word2 may be the same and they represent two individual words in the list.
 Example:
