@@ -3,8 +3,7 @@ def min_cost_climbing_stairs(cost):
     n = len(cost)
     arr = [0] * (n + 1)
     for i in range(2, n + 1):
-        arr[i] = min(arr[i - 1] + cost[i - 1],
-                    arr[i - 2] + cost[i - 2]) 
+        arr[i] = min(arr[i - 1] + cost[i - 1], arr[i - 2] + cost[i - 2]) 
 
 
 
