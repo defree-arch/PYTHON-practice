@@ -4,14 +4,14 @@
 Once you pay the cost, you can either climb one or two steps.
 You can either start from the step with index 0, or the step with index 1.
 Return the minimum cost to reach the top of the staircase, which is the position just past the last step (index cost.length). 
-![3 ms Beats 61.78% | 19.28 MB Beats 81.24%](61-746.png)
+![3 ms Beats 61.78% | 19.28 MB Beats 81.24%](746/61-746.png)
 ***
 - **61-942 - leetcode.com 942**
 > A permutation perm of n + 1 integers of all the integers in the range [0, n] can be represented as a string s of length n where:
 s[i] == 'I' if perm[i] < perm[i + 1], and
 s[i] == 'D' if perm[i] > perm[i + 1].
 Given a string s, reconstruct the permutation perm and return it. If there are multiple valid permutations perm, return any of them. 
-![0 ms Beats 100.00% | 19.93 MB Beats 78.96%](61-942.png)
+![0 ms Beats 100.00% | 19.93 MB Beats 78.96%](942/61-942.png)
 ***
 - **61-245 - leetcode.com 245** (*No access for testing on the site*)
 > Given a list of words and two words word1 and word2, return the shortest distance between these two words in the list.
@@ -24,4 +24,4 @@ Input: word1 = "makes", word2 = "makes"
 Output: 3
 Note:
 You may assume word1 and word2 are both in the list.
-![нет теста на leetcode.com](61-245.png)
+![No access for testing on leetcode.com](245/61-245.png)
