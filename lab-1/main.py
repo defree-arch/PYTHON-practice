@@ -1,11 +1,11 @@
-"""Менеджер паролей: меню в терминале."""
+
 import getpass
 import secrets
 import string
 
 from cryptography.fernet import InvalidToken
 
-import crypto_utils as crypto
+import encryption as crypto
 import storage
 
 MAX_ATTEMPTS = 3
@@ -13,14 +13,14 @@ MIN_MASTER_LEN = 8
 
 
 def setup_master() -> bytes:
-    print("Первый запуск. Придумайте пароль для входа.")
+    print("РџРµСЂРІС‹Р№ Р·Р°РїСѓСЃРє. РџСЂРёРґСѓРјР°Р№С‚Рµ РїР°СЂРѕР»СЊ РґР»СЏ РІС…РѕРґР°.")
     while True:
-        p1 = getpass.getpass("Пароль для входа: ")
-        p2 = getpass.getpass("Повторите пароль: ")
+        p1 = getpass.getpass("РџР°СЂРѕР»СЊ РґР»СЏ РІС…РѕРґР°: ")
+        p2 = getpass.getpass("РџРѕРІС‚РѕСЂРёС‚Рµ РїР°СЂРѕР»СЊ: ")
         if len(p1) < MIN_MASTER_LEN:
-            print(f"Слишком короткий, минимум {MIN_MASTER_LEN} символов.")
+            print(f"РЎР»РёС€РєРѕРј РєРѕСЂРѕС‚РєРёР№, РјРёРЅРёРјСѓРј {MIN_MASTER_LEN} СЃРёРјРІРѕР»РѕРІ.")
         elif p1 != p2:
-            print("Пароли не совпадают.")
+            print("РџР°СЂРѕР»Рё РЅРµ СЃРѕРІРїР°РґР°СЋС‚.")
         else:
             break
     salt_auth = crypto.new_salt()
@@ -36,10 +36,10 @@ def login():
     salt_key = storage.get_meta("salt_key")
     saved_hash = storage.get_meta("hash")
     for attempt in range(1, MAX_ATTEMPTS + 1):
-        password = getpass.getpass("Пароль для входа: ")
+        password = getpass.getpass("РџР°СЂРѕР»СЊ РґР»СЏ РІС…РѕРґР°: ")
         if crypto.check_password(password, salt_auth, saved_hash):
             return crypto.make_key(password, salt_key)
-        print(f"Неверный пароль. Осталось попыток: {MAX_ATTEMPTS - attempt}")
+        print(f"РќРµРІРµСЂРЅС‹Р№ РїР°СЂРѕР»СЊ. РћСЃС‚Р°Р»РѕСЃСЊ РїРѕРїС‹С‚РѕРє: {MAX_ATTEMPTS - attempt}")
     return None
 
 
@@ -51,7 +51,7 @@ def generate_password(length: int = 16) -> str:
 def show_services() -> None:
     services = storage.list_services()
     if not services:
-        print("Записей пока нет.")
+        print("Р—Р°РїРёСЃРµР№ РїРѕРєР° РЅРµС‚.")
         return
     for service in services:
         entry = storage.get_entry(service)
@@ -59,53 +59,53 @@ def show_services() -> None:
 
 
 def add_account(key: bytes) -> None:
-    service = input("Название сервиса: ").strip()
+    service = input("РќР°Р·РІР°РЅРёРµ СЃРµСЂРІРёСЃР°: ").strip()
     if not service:
-        print("Название не может быть пустым.")
+        print("РќР°Р·РІР°РЅРёРµ РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ РїСѓСЃС‚С‹Рј.")
         return
-    login_name = input("Логин: ").strip()
-    password = getpass.getpass("Пароль (Enter, чтобы сгенерировать): ")
+    login_name = input("Р›РѕРіРёРЅ: ").strip()
+    password = getpass.getpass("РџР°СЂРѕР»СЊ (Enter, С‡С‚РѕР±С‹ СЃРіРµРЅРµСЂРёСЂРѕРІР°С‚СЊ): ")
     if not password:
         password = generate_password()
-        print(f"Сгенерирован пароль: {password}")
+        print(f"РЎРіРµРЅРµСЂРёСЂРѕРІР°РЅ РїР°СЂРѕР»СЊ: {password}")
     storage.add_entry(service, login_name, crypto.encrypt(key, password))
-    print("Сохранено.")
+    print("РЎРѕС…СЂР°РЅРµРЅРѕ.")
 
 
 def get_account(key: bytes) -> None:
-    service = input("Название сервиса: ").strip()
+    service = input("РќР°Р·РІР°РЅРёРµ СЃРµСЂРІРёСЃР°: ").strip()
     entry = storage.get_entry(service)
     if entry is None:
-        print("Такой записи нет.")
+        print("РўР°РєРѕР№ Р·Р°РїРёСЃРё РЅРµС‚.")
         return
     login_name, encrypted = entry
     try:
-        print(f"Логин: {login_name}\nПароль: {crypto.decrypt(key, encrypted)}")
+        print(f"Р›РѕРіРёРЅ: {login_name}\nРџР°СЂРѕР»СЊ: {crypto.decrypt(key, encrypted)}")
     except InvalidToken:
-        print("Не удалось расшифровать: данные повреждены.")
+        print("РќРµ СѓРґР°Р»РѕСЃСЊ СЂР°СЃС€РёС„СЂРѕРІР°С‚СЊ: РґР°РЅРЅС‹Рµ РїРѕРІСЂРµР¶РґРµРЅС‹.")
 
 
 def delete_account() -> None:
-    service = input("Какой сервис удалить: ").strip()
+    service = input("РљР°РєРѕР№ СЃРµСЂРІРёСЃ СѓРґР°Р»РёС‚СЊ: ").strip()
     if storage.delete_entry(service):
-        print("Удалено.")
+        print("РЈРґР°Р»РµРЅРѕ.")
     else:
-        print("Такой записи нет.")
+        print("РўР°РєРѕР№ Р·Р°РїРёСЃРё РЅРµС‚.")
 
 
 MENU = """
-1 - Показать сервисы
-2 - Добавить запись
-3 - Показать пароль
-4 - Удалить запись
-5 - Сгенерировать пароль
-0 - Выход"""
+1 - РџРѕРєР°Р·Р°С‚СЊ СЃРµСЂРІРёСЃС‹
+2 - Р”РѕР±Р°РІРёС‚СЊ Р·Р°РїРёСЃСЊ
+3 - РџРѕРєР°Р·Р°С‚СЊ РїР°СЂРѕР»СЊ
+4 - РЈРґР°Р»РёС‚СЊ Р·Р°РїРёСЃСЊ
+5 - РЎРіРµРЅРµСЂРёСЂРѕРІР°С‚СЊ РїР°СЂРѕР»СЊ
+0 - Р’С‹С…РѕРґ"""
 
 
 def menu(key: bytes) -> None:
     while True:
         print(MENU)
-        action = input("Выберите действие: ").strip()
+        action = input("Р’С‹Р±РµСЂРёС‚Рµ РґРµР№СЃС‚РІРёРµ: ").strip()
         if action == "1":
             show_services()
         elif action == "2":
@@ -117,10 +117,10 @@ def menu(key: bytes) -> None:
         elif action == "5":
             print(generate_password())
         elif action == "0":
-            print("Выход...")
+            print("Р’С‹С…РѕРґ...")
             break
         else:
-            print("Нет такого действия.")
+            print("РќРµС‚ С‚Р°РєРѕРіРѕ РґРµР№СЃС‚РІРёСЏ.")
 
 
 def main() -> None:
@@ -130,7 +130,7 @@ def main() -> None:
     else:
         key = login()
         if key is None:
-            print("Доступ закрыт.")
+            print("Р”РѕСЃС‚СѓРї Р·Р°РєСЂС‹С‚.")
             return
     menu(key)
 
